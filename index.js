@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
+require("dotenv").config();
 const port = process.env.PORT || 5000;
 const app = express();
 
@@ -17,13 +18,21 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-      
-  } 
-  finally {}
+    await client.connect();
+    const inventoryCollection = client.db("warehouse").collection("inventory");
+
+    app.get("/inventory", async (req, res) => {
+      const query = {};
+      const cursor = inventoryCollection.find(query);
+      const inventory = await cursor.toArray();
+      res.send(inventory);
+    });
+  } finally {
+  }
 }
 run().catch(console.dir);
 // client.connect((err) => {
-//   const collection = client.db("warehouse").collection("inventory");
+
 //   // perform actions on the collection object
 //   console.log("Mongo is Connected!");
 //   client.close();
