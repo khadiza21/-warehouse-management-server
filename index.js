@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion ,ObjectId } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const port = process.env.PORT || 5000;
 const app = express();
@@ -37,12 +37,11 @@ async function run() {
     });
 
     //POST
-    app.post("/inventory", async(req, res) => {
+    app.post("/inventory", async (req, res) => {
       const newInventory = req.body;
-      const result = await inventoryCollection.insertOne(newInventory);    
+      const result = await inventoryCollection.insertOne(newInventory);
       res.send(result);
     });
-
 
     //delete
     app.delete("/inventory/:id", async (req, res) => {
@@ -51,8 +50,6 @@ async function run() {
       const result = await inventoryCollection.deleteOne(query);
       res.send(result);
     });
-
-   
   } finally {
   }
 }
