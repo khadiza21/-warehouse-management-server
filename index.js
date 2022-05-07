@@ -9,12 +9,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.fg0f0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-});
+
+
+
+
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.zsuwx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
 
 async function run() {
   try {
@@ -50,20 +51,33 @@ async function run() {
       const result = await inventoryCollection.deleteOne(query);
       res.send(result);
     });
+
+      //update user
+      app.put("/inventory/:id", async (req, res) => {
+        const id = req.params.id;
+        const updatedQuantity = req.body;
+        console.log(updatedQuantity);
+        const filter = {_id: ObjectId(id)};
+        const options = { upsert: true };
+        const updatedDoc = {
+          $set: {
+            quantity: updatedQuantity.quantity
+            
+          },
+        };
+        const result = await inventoryCollection.updateOne(filter,updatedDoc,options);
+        res.send(result);
+      });
+
   } finally {
   }
 }
 run().catch(console.dir);
-// client.connect((err) => {
 
-//   // perform actions on the collection object
-//   console.log("Mongo is Connected!");
-//   client.close();
-// });
 
 app.get("/", (req, res) => {
   res.send("server is runnuning and wating for client");
 });
 app.listen(port, () => {
-  console.log("server is running on port", port);
+  console.log("serverr is running on port", port);
 });
