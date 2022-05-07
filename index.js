@@ -36,6 +36,16 @@ async function run() {
       res.send(result);
     });
 
+    // get users items
+    app.get("/myitems", async (req, res) => {
+      const email = req.query.email;
+      console.log(email);
+      const query = {email:email};
+      const cursor = inventoryCollection.find(query);
+      const myitems = await cursor.toArray();
+      res.send(myitems);
+    });
+
     //POST
     app.post("/inventory", async (req, res) => {
       const newInventory = req.body;
