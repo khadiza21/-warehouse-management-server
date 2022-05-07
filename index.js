@@ -5,7 +5,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const port = process.env.PORT || 5000;
 const app = express();
-
+// heroku login
 //moddleware
 app.use(cors());
 app.use(express.json());
@@ -118,8 +118,8 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("server is runnuning and wating for client");
+  res.send("warehouse server is runnuning");
 });
 app.listen(port, () => {
-  console.log("serverr is running on port", port);
+  console.log("server is running on port", port);
 });
