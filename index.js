@@ -5,11 +5,12 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const port = process.env.PORT || 5000;
 const app = express();
-// heroku login
+
 //moddleware
 app.use(cors());
 app.use(express.json());
 
+//token setup
 function verifyJWT(req, res, next) {
   const authHeader = req.headers.authorization;
 
@@ -48,6 +49,7 @@ async function run() {
       res.send({ accessToken });
     });
 
+    //get all data of inventory items
     app.get("/inventory", async (req, res) => {
       const query = {};
       const cursor = inventoryCollection.find(query);
